@@ -1,30 +1,81 @@
-'use strict';
+"use strict";
 
 //Below is an object containing different color palettes that you will show
 //Palettes from ColorBrewer (http://colorbrewer2.org/)
 const COLORS_9 = {
-  Spectral: ['#d53e4f','#f46d43','#fdae61','#fee08b','#ffffbf','#e6f598','#abdda4','#66c2a5','#3288bd'],
-  Reds: ['#fff5f0','#fee0d2','#fcbba1','#fc9272','#fb6a4a','#ef3b2c','#cb181d','#a50f15','#67000d'],
-  Blues: ['#f7fbff','#deebf7','#c6dbef','#9ecae1','#6baed6','#4292c6','#2171b5','#08519c','#08306b'],
-  Greens: ['#f7fcf5','#e5f5e0','#c7e9c0','#a1d99b','#74c476','#41ab5d','#238b45','#006d2c','#00441b'],
-  Purples: ['#fcfbfd','#efedf5','#dadaeb','#bcbddc','#9e9ac8','#807dba','#6a51a3','#54278f','#3f007d'],
+  Spectral: [
+    "#d53e4f",
+    "#f46d43",
+    "#fdae61",
+    "#fee08b",
+    "#ffffbf",
+    "#e6f598",
+    "#abdda4",
+    "#66c2a5",
+    "#3288bd",
+  ],
+  Reds: [
+    "#fff5f0",
+    "#fee0d2",
+    "#fcbba1",
+    "#fc9272",
+    "#fb6a4a",
+    "#ef3b2c",
+    "#cb181d",
+    "#a50f15",
+    "#67000d",
+  ],
+  Blues: [
+    "#f7fbff",
+    "#deebf7",
+    "#c6dbef",
+    "#9ecae1",
+    "#6baed6",
+    "#4292c6",
+    "#2171b5",
+    "#08519c",
+    "#08306b",
+  ],
+  Greens: [
+    "#f7fcf5",
+    "#e5f5e0",
+    "#c7e9c0",
+    "#a1d99b",
+    "#74c476",
+    "#41ab5d",
+    "#238b45",
+    "#006d2c",
+    "#00441b",
+  ],
+  Purples: [
+    "#fcfbfd",
+    "#efedf5",
+    "#dadaeb",
+    "#bcbddc",
+    "#9e9ac8",
+    "#807dba",
+    "#6a51a3",
+    "#54278f",
+    "#3f007d",
+  ],
 };
 
 /* Your code goes here! */
 
 //Create a variable `h1` that refers to the `<h1>` element in the DOM.
-
+let theH1 = document.querySelector("h1");
 
 //Change the `textContent` of the `<h1>` element to be "Which Swatch?"
-
+theH1.textContent = "Which Swatch?";
 
 //Somehow the rainbow icon image was included without an alt tag! Set its `alt`
 //attribute to be "A beautiful rainbow".
-
+let imgElem = document.querySelector("img");
+imgElem.alt = "A beautiful rainbow";
 
 //Give the image the Bootstrap-provided `float-right` CSS class to make it float
 //to the right of the screen
-
+imgElem.classList.add("float-right");
 
 /*Define a function `createColorBox()` that takes in two parameters: a color 
 string (e.g., "blue") and a numeric size (in pixels, e.g., 100). The function 
@@ -38,8 +89,14 @@ shoukld do the following:
 You can test this function by logging out the returned value and checking its
 attributes.
 */
-
-
+function createColorBox(color, size) {
+  let colorBox = document.createElement("div");
+  colorBox.classList.add("d-inline-block");
+  colorBox.style.backgroundColor = color;
+  colorBox.style.width = size + "px";
+  colorBox.style.height = size + "px";
+  return colorBox;
+}
 
 /* Define a function `getElementWidth()` that takes in a DOM element (not a 
 string!). This function should return the width in pixels (a number) of that
@@ -48,8 +105,9 @@ element.
    argument element. This method returns an Object containing the element's
    width and height. Return the `width` value of that object.
 */
-
-
+function getElementWidth(domElement) {
+  return domElement.getBoundingClientRect().width;
+}
 
 /* Define a function `renderPaletteRow()` that takes in two arguments: array of 
 color strings (like a SINGLE ELEMENT of the `COLORS_9` object), and a "parent" 
@@ -71,8 +129,15 @@ browser window unless you refresh.
 
 You should NOT include any test calls when running Jest tests!
 */
-
-
+function renderPaletteRow(colorArray, domElement) {
+  let newDiv = document.createElement("div");
+  let boxWidth = colorArray.length / getElementWidth(domElement);
+  for (let i = 0; i < colorArray.length; i++) {
+    let newColorBox = createColorBox(colorArray[i], boxWidth);
+    newDiv.appendChild(newColorBox);
+  }
+  domElement.appendChild(newDiv);
+}
 
 /* Define a function `renderPaletteTable()` that takes no arguments and renders 
 a color palette row for each of the palettes in the `COLORS_9` object into the 
@@ -85,18 +150,27 @@ Tip: note that `COLORS_9` is an object, not an array! You'll need to use a
 Call your `renderPaletteTable()` method to display all the color palettes!
 */
 
-
-
-//Finally, remove the paragraph in the header that explains how to complete the 
+//Finally, remove the paragraph in the header that explains how to complete the
 //problem.
 
+function renderPaletteTable() {
+  let theMain = document.querySelector("main");
+  console.log(COLORS_9);
 
+  for (let color in COLORS_9) {
+    renderPaletteRow(COLORS_9[color], theMain);
+  }
+  let theP = document.querySelector("p");
+  theP.innerHTML = "";
+}
+
+renderPaletteTable();
 
 //Make functions and variables available to tester. DO NOT MODIFY THIS.
-if(typeof module !== 'undefined' && module.exports){
+if (typeof module !== "undefined" && module.exports) {
   /* eslint-disable */
-  if(typeof createColorBox !== 'undefined') 
+  if (typeof createColorBox !== "undefined")
     module.exports.createColorBox = createColorBox;
-  if(typeof renderPaletteRow !== 'undefined') 
+  if (typeof renderPaletteRow !== "undefined")
     module.exports.renderPalette = renderPaletteRow;
 }
