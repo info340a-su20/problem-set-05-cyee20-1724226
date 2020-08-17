@@ -6,7 +6,11 @@
 let state = {
   taskList: [
     { id: 1, description: "Complete this task", complete: true },
-    {id: 2, description: "Fill in the `js/index.js` file and complete the exercise", complete: false}
+    {
+      id: 2,
+      description: "Fill in the `js/index.js` file and complete the exercise",
+      complete: false,
+    },
   ],
   inputtedText: "",
 };
@@ -30,18 +34,16 @@ function createTaskItemElement(toDoTask) {
     newTaskItem.classList.add("font-strike");
   }
   newTaskItem.addEventListener("click", function () {
+    toDoTask.complete = !toDoTask.complete;
     if (newTaskItem.complete == true) {
-      newTaskItem.complete = false;
-      newTaskItem.classList.remove("font-strike");
-    } else {
-      newTaskItem.complete = true;
       newTaskItem.classList.add("font-strike");
+    } else {
+      newTaskItem.classList.remove("font-strike");
     }
     renderTaskList();
   });
   return newTaskItem;
 }
-
 
 //Define a function `renderTaskList()` that will fill in the provided <ol> with
 //list items (<li>) representing each task in the `state.taskList`. Call your
@@ -52,7 +54,7 @@ function renderTaskList() {
   let currentTaskList = document.querySelector("ol");
   currentTaskList.innerHTML = "";
   for (let i = 0; i < state.taskList.length; i++) {
-      currentTaskList.appendChild(createTaskItemElement(state.taskList[i]));
+    currentTaskList.appendChild(createTaskItemElement(state.taskList[i]));
   }
   renderInput();
 }
@@ -76,7 +78,7 @@ function addNewTask() {
     completed: false,
   };
   state.taskList.push(newTask);
-  state.inputtedText = "test";
+  state.inputtedText = "";
   renderTaskList();
 }
 
@@ -97,7 +99,7 @@ textInput.addEventListener("input", function () {
 //You should now be able to add new items to your task list!
 //Note that items will not add when you hit the "enter" key.
 let addTask = document.querySelector("#add-task");
-addTask.addEventListener("click", addNewTask());
+addTask.addEventListener("click", addNewTask);
 
 //Time to fix some of the user experience. Define a new function `renderInput()`
 //that does two things:
